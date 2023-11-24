@@ -5,7 +5,7 @@ async function getUsers(request, response) {
 
   const users = await userModel.find({});
 
-  return response.send({ users });
+  return response.send({ users, userId: request.userId });
 }
 
 async function getOneUser(request, response) {
