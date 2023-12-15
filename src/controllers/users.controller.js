@@ -1,4 +1,5 @@
 import userModel from '../models/user.model.js';
+import bcrypt from 'bcrypt';
 
 async function getUsers(request, response) {
   const page = request.query.page;
@@ -30,8 +31,7 @@ async function createUser(request, response) {
 
     const user = await userModel.create({
       name: body.name,
-      age: body.age,
-      address: body.address,
+      password: body.password,
     });
 
     return response.send({ user });

@@ -21,7 +21,7 @@ async function login(req, res) {
     return res.status(400).send({ error: 'Contrasena no corresponde' });
   }
 
-  const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '1m' });
+  const token = jwt.sign({ userId: user._id, email:user.email, isAdmin:user.isAdmin }, JWT_SECRET, { expiresIn: '1m' });
 
   return res.status(200).send({ user, token });
 }
@@ -29,9 +29,6 @@ async function login(req, res) {
 async function register(req, res) {
   const email = req.body.email;
   const password = req.body.password;
-  const name = req.body.name;
-  const age = req.body.age;
-  const address = req.body.address;
 
   const user = await userModel.findOne({ email: email.toLowerCase() });
 
@@ -42,10 +39,7 @@ async function register(req, res) {
   const passwordHash = await bcrypt.hash(password, 10);
 
   const userSaved = await userModel.create({
-    name,
-    age,
-    address,
-    email,
+        email,
     password: passwordHash,
   });
 
